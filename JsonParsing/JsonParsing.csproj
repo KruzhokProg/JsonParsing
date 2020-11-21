@@ -77,6 +77,7 @@
   <ItemGroup>
     <Compile Include="Models\MoscowNews.cs" />
     <Compile Include="Models\Posts.cs" />
+    <Compile Include="Models\UserInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
