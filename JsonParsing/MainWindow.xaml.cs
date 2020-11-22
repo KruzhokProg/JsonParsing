@@ -53,31 +53,36 @@ namespace JsonParsing
                 // http://vongu3-001-site2.ctempurl.com/api/userinfo
 
                 // post запрос
-                //var pars = new NameValueCollection
-                //{
-                //    { "Email", "fromVS" },
-                //    { "Password", "VS" },
-                //    { "PhoneNumber", "89267090729" },
-                //    { "CompanyName", "SberBank" },
-                //    { "RoleId", "1" }
-                //};
-                //webClient.UploadValues("http://vongu3-001-site2.ctempurl.com/api/Registration","POST", pars);
+                // Создаем модель UserInfo (там указываем поля, которые надо передать) и заполняем данными
                 UserInfo user = new UserInfo();
                 user.Email = "VS2@mail.ru";
                 user.Password = "1234";
                 user.PhoneNumber = "89267090729";
                 user.RoleId = 1;
                 user.CompanyName = "MyCompany2";
+                // Превращаем обььект класса в json с помощью библиотеки NewtonSoft.Json
+                // Передаем в метод SerializeObject наш обьект с данными
                 string Serialized = JsonConvert.SerializeObject(user);
+                // Создаем Http клиент для отправки данных на сервер
                 using (var client = new HttpClient())
                 {
+                    // чистим там все вначале
                     client.DefaultRequestHeaders.Accept.Clear();
+                    // Говорим что работаем с json
                     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                    // Преобразуем данные в специальный вид для отправки
                     HttpContent content = new StringContent(Serialized, Encoding.Unicode, "application/json");
+                    // делаем Post запрос (передаем url и данные)
                     var response = client.PostAsync("http://vongu3-001-site2.ctempurl.com/api/Registration", content);
                     //var status = response.Status;
+                    // Этот шаг обязательный!!! без него не работает
+                    // возвращаем результат через геттер Result
                     var result = response.Result;
+                    // И выводим на экран (там будет вся информация, статус запроса 200 - все ок)
                     MessageBox.Show(result.ToString());
+                    // Вот и все!=)
+                    // Твоя задача создать форму регистрации, регистрируешь пользователей на сервере
+                    // потом авторизуешь, там есть GET запрос для этого, ну а GET мы уже работали!
                 }
             }
         }
